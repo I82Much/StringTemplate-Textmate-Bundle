@@ -94,6 +94,8 @@
 	</array>
 	<key>repository</key>
 	<dict>
+		<key>anonymous_template</key>
+		<dict/>
 		<key>class</key>
 		<dict>
 			<key>begin</key>
@@ -289,9 +291,47 @@
 			<key>end</key>
 			<string>\$</string>
 			<key>name</key>
-			<string>variable.other.StringTemplate</string>
+			<string>keyword.control.StringTemplate</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>3</key>
+						<dict>
+							<key>name</key>
+							<string>puntuation.separator.StringTemplate</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>(\w+)((.)\(?(\w+)\)?)*</string>
+					<key>name</key>
+					<string>variable.other.StringTemplate</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.terminator.StringTemplate</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>variable.parameter.StringTemplate</string>
+						</dict>
+						<key>3</key>
+						<dict>
+							<key>name</key>
+							<string>string.quoted.double.StringTemplate</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>(;)\s*(\w+)\s*=\s*"(.*)"</string>
+					<key>name</key>
+					<string>entity.name.tag.StringTemplate</string>
+				</dict>
 				<dict>
 					<key>match</key>
 					<string>{.*}</string>
