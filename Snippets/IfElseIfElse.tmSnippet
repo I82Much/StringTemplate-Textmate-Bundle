@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>\$if($1)\$
+$2
+\$elseif($3)\$
+$4
+\$else\$
+$5
+\$endif\$
+$0</string>
+	<key>name</key>
+	<string>IfElseIfElse</string>
+	<key>scope</key>
+	<string>source.StringTemplate</string>
+	<key>tabTrigger</key>
+	<string>ifelseif</string>
+	<key>uuid</key>
+	<string>680C73A8-3CD5-43EB-B32E-C810772540D6</string>
+</dict>
+</plist>

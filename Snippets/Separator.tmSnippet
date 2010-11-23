@@ -2,16 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>content</key>
+	<string>separator="${1:\n}"$0</string>
 	<key>name</key>
-	<string>Headings</string>
+	<string>Separator</string>
 	<key>scope</key>
-	<string>entity.name.function.StringTemplate</string>
-	<key>settings</key>
-	<dict>
-		<key>showInSymbolList</key>
-		<integer>1</integer>
-	</dict>
+	<string>storage.other.StringTemplate</string>
+	<key>tabTrigger</key>
+	<string>sep</string>
 	<key>uuid</key>
-	<string>E77659AD-A11D-4B0D-83E8-FC5479814835</string>
+	<string>72F4DC4A-8523-4367-9661-2B1CB8A4A857</string>
 </dict>
 </plist>
