@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>Nicholas Dunn’s Bundle</string>
+	<key>ordering</key>
+	<array>
+		<string>51825919-0BAE-476F-8679-B2361CDAC9B7</string>
+		<string>7DA6790D-3C96-41C4-AA76-6AEA9BCFEDCA</string>
+		<string>52C6A7BB-6FBD-478A-8DCF-CCD86F56306F</string>
+	</array>
+	<key>uuid</key>
+	<string>998B8D99-1F75-4A22-BD6D-490E230DD0A4</string>
+</dict>
+</plist>
