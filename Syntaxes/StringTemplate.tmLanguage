@@ -24,7 +24,7 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>markup.heading.StringTemplate</string>
+					<string>entity.name.function.StringTemplate</string>
 				</dict>
 			</dict>
 			<key>match</key>
