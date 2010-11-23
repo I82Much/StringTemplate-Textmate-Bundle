@@ -5,7 +5,7 @@
 	<key>name</key>
 	<string>Miscellaneous</string>
 	<key>scope</key>
-	<string>source.StringTemplate, markup.heading.StringTemplate</string>
+	<string>source.StringTemplate</string>
 	<key>settings</key>
 	<dict>
 		<key>highlightPairs</key>
@@ -39,8 +39,6 @@
 				<string>$</string>
 			</array>
 		</array>
-		<key>showInSymbolList</key>
-		<integer>1</integer>
 		<key>smartTypingPairs</key>
 		<array>
 			<array>
