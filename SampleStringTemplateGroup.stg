@@ -1,0 +1,11 @@
+group Java : asdf implements 23, 55;
+
+parentClassMap ::= [
+  "root":"Object",
+  default : key
+]
+
+packageDeclaration(package)::=<<
+package $package$;
+>>
+
