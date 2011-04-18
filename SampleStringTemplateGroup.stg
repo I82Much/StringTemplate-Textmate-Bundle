@@ -5,7 +5,47 @@ parentClassMap ::= [
   default : key
 ]
 
-packageDeclaration(package)::=<<
-package $package$;
+asdf(asdf={4235}, basdf="asdf")::=<<
+
+$asdf; separator="\n"$
+$asdf; separator={my_separator$asdf$}$
+$asdf:args()$
+
+asdf
+"asdfasdf"
+
+
 >>
 
+
+
+parentClassMap ::= [
+  "root":"Object",
+  default : key
+]
+
+
+packageDeclaration(package)::=<<
+
+asdf
+>>
+
+constants ::= [
+    "PI":"math.pi",
+    "-PI":"-math.pi",
+    "2PI":"(2.0 * math.pi)",
+    "-2PI":"-(2.0 * math.pi)",
+    "PI/2":"(math.pi / 2.0)",
+    "-PI/2":"-(math.pi / 2.0)",
+
+    default : key
+]
+
+packageDeclaration(package, package2="hello", package3=asdfasdf)::=<<
+package $package$;
+package <package>;
+>>
+
+package()::=<<
+
+>>

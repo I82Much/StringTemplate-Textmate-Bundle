@@ -4,8 +4,8 @@
 	foldingStopMarker = '(\]|>>|\$endif\$)';
 	patterns = (
 		{	include = '#class'; },
-		{	include = '#template'; },
 		{	include = '#map'; },
+		{	include = '#methods'; },
 		{	name = 'comment.line.double-slash.StringTemplate';
 			match = '//.*\n';
 		},
@@ -28,7 +28,11 @@
 		{	include = '#template'; },
 	);
 	repository = {
-		anonymous_template = { };
+		anonymous_template = {
+			name = 'meta.anonymous_template.StringTemplate';
+			begin = '{';
+			end = '}';
+		};
 		class = {
 			name = 'meta.class.StringTemplate';
 			begin = '\b(?=group|interface)\b';
@@ -47,17 +51,6 @@
 				2 = { name = 'entity.name.type.class.StringTemplate'; };
 			};
 		};
-		template = {
-		    name = 'meta.function.StringTemplate';
-		    begin = '\b(\w+)\s*(\())(\))<<';
-		    end = '>>';
-		    
-            // match = '(\w+)\s*\(((\w+)?(\s*(,)\s*(\w+))*)\)\s*::=';
-            //          captures = {
-            //              1 = { name = 'entity.name.function.StringTemplate'; };
-            //              2 = { name = 'variable.parameter.StringTemplate'; };
-            //          };
-		};
 		group = {
 			match = '\s*(\w+)\s*(:\s*(\w+))?';
 			captures = {
@@ -74,15 +67,21 @@
 				4 = { name = 'entity.other.type.interface.StringTemplate'; };
 			};
 		};
+		keywords = {
+			patterns = (
+				{	name = 'keyword.reserved.StringTemplate';
+					match = '\b(default|first|group|if|implements|interface|last|length|optionalrest|strip|super|trunc|else|endif|elseif)\b';
+				},
+			);
+		};
 		map = {
 			name = 'meta.structure.dictionary.StringTemplate';
 			begin = '(\w+)\s*(::=)\s*(\[)';
 			end = '\]';
-			beginCaptures = { 
-                // 1 = { name = 'entity.name.type.variable.StringTemplate';};
-                1 = { name = 'support.function.StringTemplate';};
-			    2 = { name = 'punctuation.definition.array.begin.StringTemplate'; }; 
-			    3 = { name = 'punctuation.definition.array.begin.StringTemplate'; }; 
+			beginCaptures = {
+				1 = { name = 'support.function.StringTemplate'; };
+				2 = { name = 'punctuation.definition.array.begin.StringTemplate'; };
+				3 = { name = 'punctuation.definition.array.begin.StringTemplate'; };
 			};
 			endCaptures = { 0 = { name = 'punctuation.definition.array.end.StringTemplate'; }; };
 			patterns = (
@@ -90,21 +89,12 @@
 					match = '\b(default|key)\b';
 				},
 				{	include = '#string'; },
-				{   name = 'invalid.map.unquoted.StringTemplate';
-				    match = '\b[^"].*[^"]\b';
-				    disabled = 1;
-				}
+				{	name = 'invalid.map.unquoted.StringTemplate';
+					match = '\b[^"].*[^"]\b';
+					disabled = 1;
+				},
 			);
 		};
-		
-		keywords = {
-		    patterns = (
-		        { 
-		            name = 'keyword.reserved.StringTemplate';
-                    match = '\b(default|first|group|if|implements|interface|last|length|optionalrest|strip|super|trunc|else|endif|elseif)\b';
-	            }
-	        );
-        };
 		
 		parent_class = {
 			match = '(:)\s*(\w+)';
@@ -122,6 +112,14 @@
 					match = '\\.';
 				},
 			);
+		};
+		stringtemplate = { 
+		    patterns = (
+		        { include = '#template'; },
+		        { include = '#string';}
+		        
+		    );
+		    
 		};
 		template = {
 			name = 'storage.other.StringTemplate';
@@ -145,5 +143,57 @@
 				},
 			);
 		};
+
+        
+		methods = {
+			name = 'meta.method.java';
+			begin = '(?!new)(?=\w.*\s+)(?=[^=]+\()';
+			end = '(\>\>)';
+			patterns = (
+				{	name = 'meta.method.identifier.StringTemplate';
+					begin = '(\w+)\s*\(';
+					end = '\)';
+					beginCaptures = { 1 = { name = 'entity.name.function.StringTemplate'; }; };
+					patterns = ( { include = '#parameters'; } );
+				},
+				{	name = 'meta.method.body.StringTemplate';
+					begin = '(::=\<\<)';
+					end = '(?=\>\>)';
+        			beginCaptures= { 0 = {name='punctuation.section.function.begin.StringTemplate';};};
+        			endCaptures= { 0 = {name='punctuation.section.function.end.StringTemplate';};};
+					patterns = ( { include = '#stringtemplate'; } );
+				},
+			);
+		};
+		
+		
+		parameters = {
+		    contentName = 'meta.function.parameters.StringTemplate';
+		    
+			patterns = (
+				{	include = '#named_args'; },
+				{	name = 'variable.parameter.StringTemplate';
+					match = '\w+';
+				},
+			);
+		};
+		named_args = {
+		    begin = '\b(\w+)(=)(?!=)';
+            // begin = '\b([a-zA-Z_][a-zA-Z_0-9]*)\s*(=)(?!=)';
+            // end = '\s*(?:(,)|(?=$\n?|[\)\:]))';
+            
+            // 
+            end = '\s*(?=(,)|(\)))';
+			beginCaptures = {
+				1 = { name = 'variable.parameter.function.StringTemplate'; };
+				2 = { name = 'keyword.operator.assignment.StringTemplate'; };
+				3 = { name = 'variable.parameter';};
+			};
+			endCaptures = { 1 = { name = 'punctuation.separator.parameters.StringTemplate'; }; };
+			
+			patterns = ( { include = '$self';});
+			
+		};
+		
 	};
 }
