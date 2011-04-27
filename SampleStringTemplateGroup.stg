@@ -5,19 +5,48 @@ parentClassMap ::= [
   default : key
 ]
 
-asdf(asdf={4235}, basdf="asdf")::=<<
+asdf(asdf={4235 asdf asdf asdf asdf "asdf$asd$"}, basdf="asdf")::=<<
 
-$asdf; separator="\n"$
-$asdf; separator={my_separator$asdf$}$
+"$asdf$ asdf dd"
+"asdf"
+
+$asdf;bb="55"$
+$restasdf; separator="\n"$
+$asdf; separator={asdf}$
 $asdf:args()$
+$separator.x.y$
+
 
 asdf
 "asdfasdf"
 
+hello "said" the cat
 
+// HI
+$rest$
+$asd$
+
+$if(x)$
+
+
+$elseif$
+
+$endif$
+rest
+
+$! !$
+
+public class X {
+    default 
+    
+}
 >>
 
-
+message()::=<<
+<section>
+    $innerClasses:{inner | $message()$}; separator="\n"$
+</section>
+>>
 
 parentClassMap ::= [
   "root":"Object",

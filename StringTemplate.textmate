@@ -11,12 +11,12 @@
 		},
 		{	name = 'comment.block.empty.StringTemplate';
 			match = '/\*\*/';
-			captures = { 0 = { name = 'punctuation.definition.comment.java'; }; };
+			captures = { 0 = { name = 'punctuation.definition.comment.StringTemplate'; }; };
 		},
 		{	name = 'comment.block';
 			begin = '(/\*|\$!)';
 			end = '(\*/|!\$)';
-			captures = { 0 = { name = 'punctuation.definition.comment.java'; }; };
+			captures = { 0 = { name = 'punctuation.definition.comment.StringTemplate'; }; };
 		},
 		{	match = '\s*((//).*$\n?)';
 			captures = {
@@ -29,9 +29,12 @@
 	);
 	repository = {
 		anonymous_template = {
-			name = 'meta.anonymous_template.StringTemplate';
+			name = 'storage.anonymous_template.StringTemplate';
 			begin = '{';
 			end = '}';
+			beginCaptures = { 0 = { name = 'punctuation.section.anonymous_template.begin.StringTemplate'; }; };
+			endCaptures = { 0 = { name = 'punctuation.section.anonymous_template.end.StringTemplate'; }; };
+			patterns = ( { include = '#'; } );
 		};
 		class = {
 			name = 'meta.class.StringTemplate';
@@ -51,6 +54,17 @@
 				2 = { name = 'entity.name.type.class.StringTemplate'; };
 			};
 		};
+		conditional = {
+			patterns = (
+				{	include = '#if'; },
+				{	include = '#else'; },
+			);
+		};
+		else = {
+			name = 'keyword.control.conditional.StringTemplate';
+			match = '(else|endif)';
+			disabled = 0;
+		};
 		group = {
 			match = '\s*(\w+)\s*(:\s*(\w+))?';
 			captures = {
@@ -58,6 +72,16 @@
 				2 = { name = 'punctuation.separator'; };
 				3 = { name = 'entity.other.inherited-class.StringTemplate'; };
 			};
+		};
+		if = {
+			name = 'meta.conditional.StringTemplate';
+			begin = '(if|elseif)(\()';
+			end = '(\)*)';
+			beginCaptures = {
+				1 = { name = 'keyword.control.conditional.StringTemplate'; };
+				2 = { name = 'punctuation.section.conditional.begin.StringTemplate'; };
+			};
+			endCaptures = { 0 = { name = 'punctuation.section.conditional.end.StringTemplate'; }; };
 		};
 		interfaces = {
 			match = '(implements)\s+(\w+)\s*(,\s*(\w+))*';
@@ -70,7 +94,7 @@
 		keywords = {
 			patterns = (
 				{	name = 'keyword.reserved.StringTemplate';
-					match = '\b(default|first|group|if|implements|interface|last|length|optionalrest|strip|super|trunc|else|endif|elseif)\b';
+					match = '(default|first|group|if|implements|interface|last|length|optional|rest|strip|super|trunc|else|endif|elseif)';
 				},
 			);
 		};
@@ -96,58 +120,34 @@
 			);
 		};
 		
-		parent_class = {
-			match = '(:)\s*(\w+)';
-			captures = {
-				1 = { name = 'punctuation.separator'; };
-				2 = { name = 'entity.other.inherited-class.StringTemplate'; };
-			};
-		};
-		string = {
-			name = 'string.quoted.double.untitled';
-			begin = '(")';
-			end = '(")';
-			patterns = (
-				{	name = 'constant.character.escape.untitled';
-					match = '\\.';
-				},
-			);
-		};
-		stringtemplate = { 
-		    patterns = (
-		        { include = '#template'; },
-		        { include = '#string';}
-		        
-		    );
+		
+		assignment = {
+		    name = 'meta.variable.assignment';
+            begin = '(\w+)';
+            end = '';
 		    
 		};
-		template = {
-			name = 'storage.other.StringTemplate';
-			begin = '[$]';
-			end = '[$]';
-			patterns = (
-				{	name = 'variable.other.StringTemplate';
-					match = '(\w+)((.)\(?(\w+)\)?)*';
-					captures = { 3 = { name = 'puntuation.separator.StringTemplate'; }; };
-				},
-				{	name = 'entity.name.tag.StringTemplate';
-					match = '(;)\s*(\w+)\s*=\s*"(.*)"';
-					captures = {
-						1 = { name = 'punctuation.terminator.StringTemplate'; };
-						2 = { name = 'variable.parameter.StringTemplate'; };
-						3 = { name = 'string.quoted.double.StringTemplate'; };
-					};
-				},
-				{	name = 'constant.character.escape.untitled';
-					match = '{.*}';
-				},
-			);
+		
+		
+		lhs = {
+		    comment='The left side of an assignment statement';
+		    name = 'variable.parameter.StringTemplate';
+		    
 		};
-
-        
+		rhs = {
+            comment='Anything that can be used in as the right hand side of an assignment statement';
+		    
+            patterns = (
+                {   include = '#string'; },
+                {   include = '#anonymous_template'; },
+            );
+		    
+		};
+		
+		
 		methods = {
-			name = 'meta.method.java';
-			begin = '(?!new)(?=\w.*\s+)(?=[^=]+\()';
+			name = 'meta.method.StringTemplate';
+			begin = '(?=\w.*\s+)(?=[^=]+\()';
 			end = '(\>\>)';
 			patterns = (
 				{	name = 'meta.method.identifier.StringTemplate';
@@ -159,17 +159,35 @@
 				{	name = 'meta.method.body.StringTemplate';
 					begin = '(::=\<\<)';
 					end = '(?=\>\>)';
-        			beginCaptures= { 0 = {name='punctuation.section.function.begin.StringTemplate';};};
-        			endCaptures= { 0 = {name='punctuation.section.function.end.StringTemplate';};};
-					patterns = ( { include = '#stringtemplate'; } );
+					beginCaptures = { 0 = { name = 'punctuation.section.function.begin.StringTemplate'; }; };
+					endCaptures = { 0 = { name = 'punctuation.section.function.end.StringTemplate'; }; };
+					patterns = (
+						{	name = 'comment.block';
+							begin = '(\$!)';
+							end = '(!\$)';
+							captures = { 0 = { name = 'punctuation.definition.comment.StringTemplate'; }; };
+						},
+						{	include = '#stringtemplate'; },
+					);
 				},
 			);
 		};
-		
-		
+		named_args = {
+			begin = '\b(\w+)\s*(=)(?!=)';
+			end = '\s*(?=(,)|(\)))';
+			beginCaptures = {
+				1 = { name = 'variable.parameter.function.StringTemplate'; };
+				2 = { name = 'keyword.operator.assignment.StringTemplate'; };
+				3 = { name = 'variable.parameter'; };
+			};
+			endCaptures = { 1 = { name = 'punctuation.separator.parameters.StringTemplate'; }; };
+			patterns = (
+				{	include = '#anonymous_template'; },
+				{	include = '$self'; },
+			);
+		};
 		parameters = {
-		    contentName = 'meta.function.parameters.StringTemplate';
-		    
+			contentName = 'meta.function.parameters.StringTemplate';
 			patterns = (
 				{	include = '#named_args'; },
 				{	name = 'variable.parameter.StringTemplate';
@@ -177,23 +195,73 @@
 				},
 			);
 		};
-		named_args = {
-		    begin = '\b(\w+)(=)(?!=)';
-            // begin = '\b([a-zA-Z_][a-zA-Z_0-9]*)\s*(=)(?!=)';
-            // end = '\s*(?:(,)|(?=$\n?|[\)\:]))';
-            
-            // 
-            end = '\s*(?=(,)|(\)))';
-			beginCaptures = {
-				1 = { name = 'variable.parameter.function.StringTemplate'; };
-				2 = { name = 'keyword.operator.assignment.StringTemplate'; };
-				3 = { name = 'variable.parameter';};
+		parent_class = {
+			match = '(:)\s*(\w+)';
+			captures = {
+				1 = { name = 'punctuation.separator'; };
+				2 = { name = 'entity.other.inherited-class.StringTemplate'; };
 			};
-			endCaptures = { 1 = { name = 'punctuation.separator.parameters.StringTemplate'; }; };
-			
-			patterns = ( { include = '$self';});
-			
 		};
-		
+		string = {
+			name = 'string.quoted.double.StringTemplate';
+			begin = '(")';
+			end = '(")';
+			patterns = (
+				{	name = 'constant.character.escape.untitled';
+					match = '\\.';
+				},
+				{	include = '#template'; },
+			);
+		};
+		stringtemplate = {
+			patterns = (
+				{	include = '#template'; },
+				{	include = '#string'; },
+			);
+		};
+		template = {
+			name = 'storage.other.StringTemplate';
+			begin = '[$]';
+			end = '[$]';
+			beginCaptures = { 0 = { name = 'support.punctuation.section.template.begin.StringTemplate'; }; };
+			endCaptures = { 0 = { name = 'support.punctuation.section.template.end.StringTemplate'; }; };
+			patterns = (
+			    {
+				    name = 'punctuation.terminator.StringTemplate';
+				    match = '(;)';
+				},
+			    
+				{	include = '#keywords'; },
+				{	include = '#conditional'; },
+				{	include = '#variable_access'; },
+				{	include = '#template_call'; },
+				{	include = '#anonymous_template'; },
+				
+				
+				{   include = '#named_args'; },
+				
+				
+				{	name = 'entity.name.tag.StringTemplate';
+					match = '(;)\s*(\w+)\s*=\s*["{](.*)["}]';
+					captures = {
+						1 = { name = 'punctuation.terminator.StringTemplate'; };
+						2 = { name = 'variable.parameter.StringTemplate'; };
+						3 = { name = 'string.quoted.double.StringTemplate'; };
+					};
+				},
+				{	name = 'constant.character.escape.untitled';
+					match = '{.*}';
+				},
+			);
+		};
+		template_call = {
+			name = 'meta.method.identifier.StringTemplate';
+			match = '\w+';
+		};
+		variable_access = {
+			name = 'variable.other.StringTemplate';
+			match = '(\w+)(([.])\(?(\w+)\)?)*';
+			captures = { 3 = { name = 'punctuation.separator.StringTemplate'; }; };
+		};
 	};
 }
