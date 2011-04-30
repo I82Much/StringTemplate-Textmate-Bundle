@@ -157,12 +157,13 @@
 					patterns = ( { include = '#parameters'; } );
 				},
 				{	name = 'meta.method.body.StringTemplate';
+				    comment = 'We need to use positive lookahead with the end token so that it is not consumed; if it''s consumed then the meta.method.StringTemplate piece will not find a matching >> to close it.';
 					begin = '(::=\<\<)';
 					end = '(?=\>\>)';
 					beginCaptures = { 0 = { name = 'punctuation.section.function.begin.StringTemplate'; }; };
 					endCaptures = { 0 = { name = 'punctuation.section.function.end.StringTemplate'; }; };
 					patterns = (
-						{	name = 'comment.block';
+						{	name = 'comment.block.StringTemplate';
 							begin = '(\$!)';
 							end = '(!\$)';
 							captures = { 0 = { name = 'punctuation.definition.comment.StringTemplate'; }; };
