@@ -42,6 +42,8 @@ public class X {
 }
 >>
 
+$!!$
+
 message()::=<<
 <section>
     $innerClasses:{inner | $message()$}; separator="\n"$
@@ -66,11 +68,11 @@ constants ::= [
     "-2PI":"-(2.0 * math.pi)",
     "PI/2":"(math.pi / 2.0)",
     "-PI/2":"-(math.pi / 2.0)",
-
     default : key
 ]
 
 packageDeclaration(package, package2="hello", package3=asdfasdf)::=<<
+$!asdfasdf!$
 package $package$;
 package <package>;
 >>

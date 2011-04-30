@@ -24,11 +24,11 @@
 		</dict>
 		<dict>
 			<key>include</key>
-			<string>#function</string>
+			<string>#map</string>
 		</dict>
 		<dict>
 			<key>include</key>
-			<string>#map</string>
+			<string>#methods</string>
 		</dict>
 		<dict>
 			<key>match</key>
@@ -42,7 +42,7 @@
 				<key>0</key>
 				<dict>
 					<key>name</key>
-					<string>punctuation.definition.comment.java</string>
+					<string>punctuation.definition.comment.StringTemplate</string>
 				</dict>
 			</dict>
 			<key>match</key>
@@ -58,7 +58,7 @@
 				<key>0</key>
 				<dict>
 					<key>name</key>
-					<string>punctuation.definition.comment.java</string>
+					<string>punctuation.definition.comment.StringTemplate</string>
 				</dict>
 			</dict>
 			<key>end</key>
@@ -95,7 +95,46 @@
 	<key>repository</key>
 	<dict>
 		<key>anonymous_template</key>
-		<dict/>
+		<dict>
+			<key>begin</key>
+			<string>{</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.section.anonymous_template.begin.StringTemplate</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>}</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.section.anonymous_template.end.StringTemplate</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>storage.anonymous_template.StringTemplate</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#</string>
+				</dict>
+			</array>
+		</dict>
+		<key>assignment</key>
+		<dict>
+			<key>begin</key>
+			<string>(\w+)</string>
+			<key>end</key>
+			<string></string>
+			<key>name</key>
+			<string>meta.variable.assignment</string>
+		</dict>
 		<key>class</key>
 		<dict>
 			<key>begin</key>
@@ -146,23 +185,28 @@
 			<key>match</key>
 			<string>(group|interface)\s+(\w+)</string>
 		</dict>
-		<key>function</key>
+		<key>conditional</key>
 		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
+			<key>patterns</key>
+			<array>
 				<dict>
-					<key>name</key>
-					<string>entity.name.function.StringTemplate</string>
+					<key>include</key>
+					<string>#if</string>
 				</dict>
-				<key>2</key>
 				<dict>
-					<key>name</key>
-					<string>variable.parameter.StringTemplate</string>
+					<key>include</key>
+					<string>#else</string>
 				</dict>
-			</dict>
+			</array>
+		</dict>
+		<key>else</key>
+		<dict>
+			<key>disabled</key>
+			<integer>0</integer>
 			<key>match</key>
-			<string>(\w+)\s*\(((\w+)?(\s*(,)\s*(\w+))*)\)\s*::=</string>
+			<string>(else|endif)</string>
+			<key>name</key>
+			<string>keyword.control.conditional.StringTemplate</string>
 		</dict>
 		<key>group</key>
 		<dict>
@@ -187,6 +231,36 @@
 			<key>match</key>
 			<string>\s*(\w+)\s*(:\s*(\w+))?</string>
 		</dict>
+		<key>if</key>
+		<dict>
+			<key>begin</key>
+			<string>(if|elseif)(\()</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.conditional.StringTemplate</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.section.conditional.begin.StringTemplate</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(\)*)</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.section.conditional.end.StringTemplate</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>meta.conditional.StringTemplate</string>
+		</dict>
 		<key>interfaces</key>
 		<dict>
 			<key>captures</key>
@@ -210,13 +284,42 @@
 			<key>match</key>
 			<string>(implements)\s+(\w+)\s*(,\s*(\w+))*</string>
 		</dict>
+		<key>keywords</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>(default|first|group|if|implements|interface|last|length|optional|rest|strip|super|trunc|else|endif|elseif)</string>
+					<key>name</key>
+					<string>keyword.reserved.StringTemplate</string>
+				</dict>
+			</array>
+		</dict>
+		<key>lhs</key>
+		<dict>
+			<key>comment</key>
+			<string>The left side of an assignment statement</string>
+			<key>name</key>
+			<string>variable.parameter.StringTemplate</string>
+		</dict>
 		<key>map</key>
 		<dict>
 			<key>begin</key>
-			<string>\[</string>
+			<string>(\w+)\s*(::=)\s*(\[)</string>
 			<key>beginCaptures</key>
 			<dict>
-				<key>0</key>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>support.function.StringTemplate</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.array.begin.StringTemplate</string>
+				</dict>
+				<key>3</key>
 				<dict>
 					<key>name</key>
 					<string>punctuation.definition.array.begin.StringTemplate</string>
@@ -246,6 +349,158 @@
 					<key>include</key>
 					<string>#string</string>
 				</dict>
+				<dict>
+					<key>disabled</key>
+					<integer>1</integer>
+					<key>match</key>
+					<string>\b[^"].*[^"]\b</string>
+					<key>name</key>
+					<string>invalid.map.unquoted.StringTemplate</string>
+				</dict>
+			</array>
+		</dict>
+		<key>methods</key>
+		<dict>
+			<key>begin</key>
+			<string>(?=\w.*\s+)(?=[^=]+\()</string>
+			<key>end</key>
+			<string>(\&gt;\&gt;)</string>
+			<key>name</key>
+			<string>meta.method.StringTemplate</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(\w+)\s*\(</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>entity.name.function.StringTemplate</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\)</string>
+					<key>name</key>
+					<string>meta.method.identifier.StringTemplate</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#parameters</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(::=\&lt;\&lt;)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.function.begin.StringTemplate</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(?=\&gt;\&gt;)</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.function.end.StringTemplate</string>
+						</dict>
+					</dict>
+					<key>name</key>
+					<string>meta.method.body.StringTemplate</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>begin</key>
+							<string>(\$!)</string>
+							<key>captures</key>
+							<dict>
+								<key>0</key>
+								<dict>
+									<key>name</key>
+									<string>punctuation.definition.comment.StringTemplate</string>
+								</dict>
+							</dict>
+							<key>end</key>
+							<string>(!\$)</string>
+							<key>name</key>
+							<string>comment.block</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#stringtemplate</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>named_args</key>
+		<dict>
+			<key>begin</key>
+			<string>\b(\w+)\s*(=)(?!=)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>variable.parameter.function.StringTemplate</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.operator.assignment.StringTemplate</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>variable.parameter</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\s*(?=(,)|(\)))</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.separator.parameters.StringTemplate</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#anonymous_template</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+			</array>
+		</dict>
+		<key>parameters</key>
+		<dict>
+			<key>contentName</key>
+			<string>meta.function.parameters.StringTemplate</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#named_args</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\w+</string>
+					<key>name</key>
+					<string>variable.parameter.StringTemplate</string>
+				</dict>
 			</array>
 		</dict>
 		<key>parent_class</key>
@@ -266,6 +521,22 @@
 			<key>match</key>
 			<string>(:)\s*(\w+)</string>
 		</dict>
+		<key>rhs</key>
+		<dict>
+			<key>comment</key>
+			<string>Anything that can be used in as the right hand side of an assignment statement</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#string</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#anonymous_template</string>
+				</dict>
+			</array>
+		</dict>
 		<key>string</key>
 		<dict>
 			<key>begin</key>
@@ -273,7 +544,7 @@
 			<key>end</key>
 			<string>(")</string>
 			<key>name</key>
-			<string>string.quoted.double.untitled</string>
+			<string>string.quoted.double.StringTemplate</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -282,31 +553,81 @@
 					<key>name</key>
 					<string>constant.character.escape.untitled</string>
 				</dict>
+				<dict>
+					<key>include</key>
+					<string>#template</string>
+				</dict>
+			</array>
+		</dict>
+		<key>stringtemplate</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#template</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#string</string>
+				</dict>
 			</array>
 		</dict>
 		<key>template</key>
 		<dict>
 			<key>begin</key>
-			<string>\$</string>
+			<string>[$]</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.punctuation.section.template.begin.StringTemplate</string>
+				</dict>
+			</dict>
 			<key>end</key>
-			<string>\$</string>
+			<string>[$]</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.punctuation.section.template.end.StringTemplate</string>
+				</dict>
+			</dict>
 			<key>name</key>
 			<string>storage.other.StringTemplate</string>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>3</key>
-						<dict>
-							<key>name</key>
-							<string>puntuation.separator.StringTemplate</string>
-						</dict>
-					</dict>
 					<key>match</key>
-					<string>(\w+)((.)\(?(\w+)\)?)*</string>
+					<string>(;)</string>
 					<key>name</key>
-					<string>variable.other.StringTemplate</string>
+					<string>punctuation.terminator.StringTemplate</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#keywords</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#conditional</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#variable_access</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#template_call</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#anonymous_template</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#named_args</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -328,7 +649,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(;)\s*(\w+)\s*=\s*"(.*)"</string>
+					<string>(;)\s*(\w+)\s*=\s*["{](.*)["}]</string>
 					<key>name</key>
 					<string>entity.name.tag.StringTemplate</string>
 				</dict>
@@ -339,6 +660,28 @@
 					<string>constant.character.escape.untitled</string>
 				</dict>
 			</array>
+		</dict>
+		<key>template_call</key>
+		<dict>
+			<key>match</key>
+			<string>\w+</string>
+			<key>name</key>
+			<string>meta.method.identifier.StringTemplate</string>
+		</dict>
+		<key>variable_access</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.separator.StringTemplate</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(\w+)(([.])\(?(\w+)\)?)*</string>
+			<key>name</key>
+			<string>variable.other.StringTemplate</string>
 		</dict>
 	</dict>
 	<key>scopeName</key>
